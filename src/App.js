@@ -1,7 +1,7 @@
 import React from 'react';
-import { DndProvider } from 'react-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDrag } from 'react-dnd';
+
 import './App.css';
 
 const App = () => {
@@ -10,9 +10,9 @@ const App = () => {
       <div className="app">
         {/* math card */}
         <div className="math-card">
-          <div className="spot">1</div>
-          <div className="spot">1</div>
-          <div className="spot">+</div>
+          <Spot type="number">1</Spot>
+          <Spot type="number">1</Spot>
+          <Spot type="operator">+</Spot>
           <div className="total">2</div>
         </div>
 
@@ -33,6 +33,27 @@ const App = () => {
         </div>
       </div>
     </DndProvider>
+  );
+};
+
+const Spot = ({ type }) => {
+  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+    accept: type,
+    drop: (item) => console.log(item),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
+  let backgroundColor = '#f2f2f2';
+  if (canDrop) backgroundColor = '#3db897';
+  if (isOver) backgroundColor = '#4bdcb5';
+
+  return (
+    <div className="spot" ref={drop} style={{ backgroundColor }}>
+      0
+    </div>
   );
 };
 
