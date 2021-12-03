@@ -1,19 +1,24 @@
-import React from 'react';
+/* eslint-disable no-eval */
+import React, { useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import './App.css';
 
 const App = () => {
+  const [number1, setNumber1] = useState(1);
+  const [number2, setNumber2] = useState(3);
+  const [operator, setOperator] = useState('*');
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         {/* math card */}
         <div className="math-card">
-          <Spot type="number">1</Spot>
-          <Spot type="number">1</Spot>
-          <Spot type="operator">+</Spot>
-          <div className="total">2</div>
+          <Spot type="number" text={number1} />
+          <Spot type="number" text={number2} />
+          <Spot type="operator" text={operator} />
+          <div className="total">{eval(`${number1}${operator}${number2}`)}</div>
         </div>
 
         <div>
@@ -36,7 +41,7 @@ const App = () => {
   );
 };
 
-const Spot = ({ type }) => {
+const Spot = ({ type, text }) => {
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: type,
     drop: (item) => console.log(item),
@@ -52,7 +57,7 @@ const Spot = ({ type }) => {
 
   return (
     <div className="spot" ref={drop} style={{ backgroundColor }}>
-      0
+      {text}
     </div>
   );
 };
