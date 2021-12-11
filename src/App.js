@@ -10,14 +10,35 @@ const App = () => {
   const [number2, setNumber2] = useState(3);
   const [operator, setOperator] = useState('*');
 
+  const handleDrop = (spot, item) => {
+    if (spot === 'number1') setNumber1(item.text);
+    if (spot === 'number2') setNumber2(item.text);
+    if (spot === 'operator') setOperator(item.text);
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         {/* math card */}
         <div className="math-card">
-          <Spot type="number" text={number1} />
-          <Spot type="number" text={number2} />
-          <Spot type="operator" text={operator} />
+          <Spot
+            type="number"
+            text={number1}
+            spot="number1"
+            handleDrop={handleDrop}
+          />
+          <Spot
+            type="number"
+            text={number2}
+            spot="number2"
+            handleDrop={handleDrop}
+          />
+          <Spot
+            type="operator"
+            text={operator}
+            spot="operator"
+            handleDrop={handleDrop}
+          />
           <div className="total">{eval(`${number1}${operator}${number2}`)}</div>
         </div>
 
@@ -41,10 +62,13 @@ const App = () => {
   );
 };
 
-const Spot = ({ type, text }) => {
+const Spot = ({ type, text, spot, handleDrop }) => {
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: type,
-    drop: (item) => console.log(item),
+    drop: (item) => {
+      handleDrop(spot, item);
+      // here we do update
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -65,7 +89,7 @@ const Spot = ({ type, text }) => {
 const Number = ({ text }) => {
   const [{ opacity }, drag] = useDrag(() => ({
     type: 'number',
-    item: { type: 'number', number: text },
+    item: { type: 'number', text },
     collect: (monitor) => ({ opacity: monitor.isDragging() ? 0.5 : 1 }),
   }));
 
@@ -79,7 +103,7 @@ const Number = ({ text }) => {
 const Operator = ({ text }) => {
   const [{ opacity }, drag] = useDrag(() => ({
     type: 'operator',
-    item: { type: 'operator', operator: text },
+    item: { type: 'operator', text },
     collect: (monitor) => ({ opacity: monitor.isDragging() ? 0.5 : 1 }),
   }));
   return (
