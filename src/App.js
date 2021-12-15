@@ -89,7 +89,7 @@ const Spot = ({ type, text, spot, handleDrop }) => {
 const Number = ({ text }) => {
   const [{ opacity }, drag] = useDrag(() => ({
     type: 'number',
-    item: { type: 'number', text },
+    item: { text },
     collect: (monitor) => ({ opacity: monitor.isDragging() ? 0.5 : 1 }),
   }));
 
@@ -103,7 +103,7 @@ const Number = ({ text }) => {
 const Operator = ({ text }) => {
   const [{ opacity }, drag] = useDrag(() => ({
     type: 'operator',
-    item: { type: 'operator', text },
+    item: { text },
     collect: (monitor) => ({ opacity: monitor.isDragging() ? 0.5 : 1 }),
   }));
   return (
