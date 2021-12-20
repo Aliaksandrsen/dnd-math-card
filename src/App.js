@@ -47,13 +47,13 @@ const App = () => {
             {Array(10)
               .fill(0)
               .map((n, i) => (
-                <Number key={i} text={i} />
+                <Card type="number" key={i} text={i} />
               ))}
           </div>
 
           <div className="cards operators">
             {['*', '-', '+', '/'].map((o, i) => (
-              <Operator key={i} text={o} />
+              <Card type="operator" key={i} text={o} />
             ))}
           </div>
         </div>
@@ -86,26 +86,13 @@ const Spot = ({ type, text, spot, handleDrop }) => {
   );
 };
 
-const Number = ({ text }) => {
+const Card = ({ type, text }) => {
   const [{ opacity }, drag] = useDrag(() => ({
-    type: 'number',
+    type,
     item: { text },
     collect: (monitor) => ({ opacity: monitor.isDragging() ? 0.5 : 1 }),
   }));
 
-  return (
-    <div ref={drag} className="card" style={{ opacity }}>
-      {text}
-    </div>
-  );
-};
-
-const Operator = ({ text }) => {
-  const [{ opacity }, drag] = useDrag(() => ({
-    type: 'operator',
-    item: { text },
-    collect: (monitor) => ({ opacity: monitor.isDragging() ? 0.5 : 1 }),
-  }));
   return (
     <div ref={drag} className="card" style={{ opacity }}>
       {text}
