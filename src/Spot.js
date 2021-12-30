@@ -14,8 +14,8 @@ export const Spot = ({ type, text, spot, handleDrop }) => {
   }));
 
   let backgroundColor = '#f2f2f2';
-  if (canDrop) backgroundColor = '#3db897';
-  if (isOver) backgroundColor = '#4bdcb5';
+  if (canDrop) backgroundColor = '#E9967Add';
+  if (isOver) backgroundColor = '#FFA07A77';
 
   return (
     <div className="spot" ref={drop} style={{ backgroundColor }}>
